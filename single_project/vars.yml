@@ -1,0 +1,10 @@
+---
+
+host_port: 80
+domain: example.com
+admin_email: admin@example.com
+user: ubuntu
+group: www-data
+project_name: testproject
+app_dir: "{{ ansible_env.HOME }}/{{ project_name }}"
+venv_dir: "{{ app_dir }}/venv"

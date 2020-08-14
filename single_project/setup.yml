@@ -1,0 +1,127 @@
+---
+
+- name: Server Setup
+  hosts: all
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Server and project information
+      debug:
+        msg: "IP Address: {{ ansible_default_ipv4.address }}, Hostname: {{ ansible_hostname }}, Application Directory: {{ app_dir }}"
+
+    - name: Update apt cache
+      become: true
+      apt:
+        update_cache: yes
+        cache_valid_time: 86400
+
+    - name: Install requried packages
+      become: true
+      apt:
+        pkg:
+          - python3
+          - python-apt
+          - python3-pip
+          - python3-setuptools
+          - python3-virtualenv
+          - python3-dev
+          - libpq-dev
+          - nginx
+          - certbot
+          - python3-certbot-nginx
+
+    - name: Create app directory
+      become: true
+      file:
+        path: "{{ app_dir }}"
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ group }}"
+
+    - name: Copy requirements.txt
+      copy:
+        src: ../requirements.txt
+        dest: "{{ app_dir }}/requirements.txt"
+
+    - name: Install packages
+      pip:
+        requirements: "{{ app_dir }}/requirements.txt"
+        virtualenv: "{{ venv_dir }}"
+
+    - name: Sync codebase
+      synchronize:
+        src: ../src/
+        dest: "{{ app_dir }}/src"
+        rsync_opts:
+          - "--exclude=__pycache__"
+          - "--exclude=media"
+          - "--exclude=db.sqlite3"
+
+    - name: Copy gunicorn systemd socket & service files
+      become: true
+      template:
+        src: "{{ item.src }}"
+        dest: "/etc/systemd/system/{{ item.dist }}"
+      loop:
+        - { src: 'gunicorn.socket.j2', dist: 'gunicorn.socket' }
+        - { src: 'gunicorn.service.j2', dist: 'gunicorn.service' }
+
+    - name: Configure gunicorn
+      become: true
+      shell: "{{ item }}"
+      loop:
+        - systemctl daemon-reload
+        - systemctl start gunicorn
+        - systemctl enable gunicorn
+        - systemctl status gunicorn
+
+    - name: Copy nginx server block
+      become: true
+      template:
+        src: nginx.j2
+        dest: /etc/nginx/sites-available/{{ project_name }}
+
+    - name: Unlink nginx default server block
+      become: true
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+
+    - name: Enable nginx server block
+      become: True
+      file:
+        src: /etc/nginx/sites-available/{{ project_name }}
+        dest: /etc/nginx/sites-enabled/{{ project_name }}
+        state: link
+
+    - name: Test & restart nginx
+      become: true
+      shell: "{{ item }}"
+      loop:
+        - nginx -t
+        - systemctl restart nginx
+
+    - name: Allow everything and enable UFW
+      become: true
+      ufw:
+        state: enabled
+        policy: allow
+
+    - name: Allow nginx on UFW
+      become: true
+      ufw:
+        rule: allow
+        name: Nginx Full
+
+    - name: Create SSL certificate
+      become: True
+      shell: "certbot --nginx -n -m {{ admin_email }} --agree-tos --redirect -d {{ domain }}"
+
+    - name: Daemon reload and restart gunicorn, nginx
+      become: True
+      shell: "{{ item }}"
+      loop:
+        - systemctl daemon-reload
+        - systemctl restart gunicorn
+        - systemctl restart nginx
