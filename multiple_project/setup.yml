@@ -58,6 +58,29 @@
           - "--exclude=media"
           - "--exclude=db.sqlite3"
 
+    - name: Make manage.py executable
+      file:
+        path: "{{ app_dir }}/src/manage.py"
+        mode: 0777
+
+    - name: Django collect static files
+      django_manage:
+        command: collectstatic
+        app_path: "{{ app_dir }}/src"
+        virtualenv: "{{ venv_dir }}"
+
+    - name: Django database migrations
+      django_manage:
+        command: makemigrations
+        app_path: "{{ app_dir }}/src"
+        virtualenv: "{{ venv_dir }}"
+
+    - name: Django migrate database
+      django_manage:
+        command: migrate
+        app_path: "{{ app_dir }}/src"
+        virtualenv: "{{ venv_dir }}"
+
     - name: Copy gunicorn systemd socket & service files
       become: true
       template:
