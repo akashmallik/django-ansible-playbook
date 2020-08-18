@@ -1,2 +1,0 @@
-[production]
-server ansible_host=192.168.0.108 ansible_port=22
