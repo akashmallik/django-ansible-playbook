@@ -1,6 +1,6 @@
 server {
     listen {{ host_port }};
-    server_name {{ ansible_default_ipv4.address }} {{ domain }};
+    server_name {{ ansible_default_ipv4.address }} {{ domain }} www.{{ domain }};
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
