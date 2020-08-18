@@ -139,7 +139,7 @@
 
     - name: Create SSL certificate
       become: True
-      shell: "certbot --nginx -n -m {{ admin_email }} --agree-tos --redirect -d {{ domain }}"
+      shell: "certbot --nginx -n -m {{ admin_email }} --agree-tos --redirect -d {{ domain }} -d www.{{ domain }}"
 
     - name: Daemon reload and restart gunicorn, nginx
       become: True
