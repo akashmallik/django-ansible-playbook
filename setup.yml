@@ -63,12 +63,6 @@
         path: "{{ app_dir }}/src/manage.py"
         mode: 0777
 
-    - name: Django collect static files
-      django_manage:
-        command: collectstatic
-        app_path: "{{ app_dir }}/src"
-        virtualenv: "{{ venv_dir }}"
-
     - name: Django database migrations
       django_manage:
         command: makemigrations
@@ -78,6 +72,12 @@
     - name: Django migrate database
       django_manage:
         command: migrate
+        app_path: "{{ app_dir }}/src"
+        virtualenv: "{{ venv_dir }}"
+      
+    - name: Django collect static files
+      django_manage:
+        command: collectstatic
         app_path: "{{ app_dir }}/src"
         virtualenv: "{{ venv_dir }}"
 
