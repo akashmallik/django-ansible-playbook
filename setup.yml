@@ -80,6 +80,11 @@
         command: collectstatic
         app_path: "{{ app_dir }}/src"
         virtualenv: "{{ venv_dir }}"
+    
+    - name: Install gunicorn
+      pip:
+        name: gunicorn
+        virtualenv: "{{ venv_dir }}"
 
     - name: Copy gunicorn systemd socket & service files
       become: true
