@@ -1,6 +1,6 @@
 # Ansible Configuration for Django Project
 
-Ansible Configuration for Django Project
+Ansible Configuration for Django Project (Multiple Django in single droplet)
 
 ## Getting Started
 
