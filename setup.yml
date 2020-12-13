@@ -92,8 +92,8 @@
         src: "{{ item.src }}"
         dest: "/etc/systemd/system/{{ item.dist }}"
       loop:
-        - { src: 'gunicorn.socket.j2', dist: 'gunicorn-{{ project_name }}.socket' }
-        - { src: 'gunicorn.service.j2', dist: 'gunicorn-{{ project_name }}.service' }
+        - { src: 'templates/gunicorn.socket.j2', dist: 'gunicorn-{{ project_name }}.socket' }
+        - { src: 'templates/gunicorn.service.j2', dist: 'gunicorn-{{ project_name }}.service' }
 
     - name: Configure gunicorn
       become: true
@@ -107,7 +107,7 @@
     - name: Copy nginx server block
       become: true
       template:
-        src: nginx.j2
+        src: templates/nginx.j2
         dest: /etc/nginx/sites-available/{{ project_name }}
 
     - name: Unlink nginx default server block
