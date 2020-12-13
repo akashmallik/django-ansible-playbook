@@ -3,11 +3,11 @@ server {
     server_name {{ ansible_default_ipv4.address }} {{ domain }} www.{{ domain }};
 
     location = /favicon.ico { access_log off; log_not_found off; }
-    location /static/ {
-        root {{app_dir}}/src;
+    location /static {
+        alias {{ app_dir }}/src/staticfiles/;
     }
-    location /media/ {
-        root {{app_dir}}/src;
+    location /media {
+        alias {{ app_dir }}/src/media/;
     }
 
     location / {
