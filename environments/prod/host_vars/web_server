@@ -1,0 +1,10 @@
+---
+
+env: prod
+default_gateway: 192.168.33.10
+host_port: 80
+domain: example.com
+admin_email: admin@example.com
+project_name: abc
+app_dir: "{{ ansible_env.HOME }}/{{ project_name }}"
+venv_dir: "{{ app_dir }}/venv"
