@@ -2,9 +2,6 @@
 
 - name: Sync codebase
   hosts: all
-  vars_files:
-    - vars.yml
-
   tasks:
     - name: Server and project information
       debug:

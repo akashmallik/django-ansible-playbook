@@ -8,3 +8,4 @@ admin_email: admin@example.com
 project_name: abc
 app_dir: "{{ ansible_env.HOME }}/{{ project_name }}"
 venv_dir: "{{ app_dir }}/venv"
+enable_ssl: true

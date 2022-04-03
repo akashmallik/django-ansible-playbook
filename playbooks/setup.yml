@@ -2,9 +2,6 @@
 
 - name: Server Setup
   hosts: all
-  vars_files:
-    - vars.yml
-
   tasks:
     - name: Server and project information
       debug:
@@ -145,6 +142,7 @@
     - name: Create SSL certificate
       become: True
       shell: "certbot --nginx -n -m {{ admin_email }} --agree-tos --redirect -d {{ domain }} -d www.{{ domain }}"
+      when: env != "local" and enable_ssl
 
     - name: Daemon reload and restart gunicorn, nginx
       become: True
