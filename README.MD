@@ -31,9 +31,6 @@ Project structure mentioned below
  ┃ ┗ 📜vars.yml
  ┣ 📂src
  ┃ ┣ 📂project_x
- ┃ ┃ ┣ 📂__pycache__
- ┃ ┃ ┃ ┣ 📜settings.cpython-37.pyc
- ┃ ┃ ┃ ┗ 📜__init__.cpython-37.pyc
  ┃ ┃ ┣ 📜asgi.py
  ┃ ┃ ┣ 📜settings.py
  ┃ ┃ ┣ 📜urls.py
