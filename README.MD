@@ -56,6 +56,20 @@ Project structure mentioned below
  ┗ 📜requirements.txt
 ```
 
+## Run in the local environment with [Vagrant](https://www.vagrantup.com/)
+Requirements:  
+- Vagrant
+- VirtualBox (Used in this project)  
+
+Installation guide for Vagrant https://www.vagrantup.com/downloads.  
+Installation guide for VirtualBox https://www.virtualbox.org/wiki/Downloads.
+
+After the successful installation of Vagrant and VirtualBox run the following cmd to run the local environment.
+```
+vagrant up
+```
+If the command runs successfully, you will be able to run the `private_network` IP (http://192.168.56.10/ for this project) specified in Vagrantfile in the browser. And it will show an Nginx page.
+
 ## Authors
 
 * **Akash Mallik** - *Initial work* - [akashmallik](https://github.com/akashmallik)
