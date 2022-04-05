@@ -44,7 +44,7 @@
     - name: Install packages
       pip:
         requirements: "{{ app_dir }}/requirements.txt"
-        virtualenv: "{{ venv_dir }}"
+        virtualenv: "{{ venv_path }}"
 
     - name: Sync codebase
       synchronize:
@@ -64,24 +64,24 @@
       django_manage:
         command: makemigrations
         app_path: "{{ app_dir }}/src"
-        virtualenv: "{{ venv_dir }}"
+        virtualenv: "{{ venv_path }}"
 
     - name: Django migrate database
       django_manage:
         command: migrate
         app_path: "{{ app_dir }}/src"
-        virtualenv: "{{ venv_dir }}"
+        virtualenv: "{{ venv_path }}"
       
     - name: Django collect static files
       django_manage:
         command: collectstatic
         app_path: "{{ app_dir }}/src"
-        virtualenv: "{{ venv_dir }}"
+        virtualenv: "{{ venv_path }}"
     
     - name: Install gunicorn
       pip:
         name: gunicorn
-        virtualenv: "{{ venv_dir }}"
+        virtualenv: "{{ venv_path }}"
 
     - name: Copy gunicorn systemd socket & service files
       become: true
@@ -142,7 +142,7 @@
     - name: Create SSL certificate
       become: True
       shell: "certbot --nginx -n -m {{ admin_email }} --agree-tos --redirect -d {{ domain }} -d www.{{ domain }}"
-      when: env != "local" and enable_ssl
+      when: environment != "local" and enable_ssl
 
     - name: Daemon reload and restart gunicorn, nginx
       become: True

@@ -1,11 +1,12 @@
 ---
 
-env: local
+user: vagrant
+group: vagrant
 default_gateway: 192.168.56.10
 host_port: 80
 domain: example.com
 admin_email: admin@example.com
 project_name: simpleproject
 app_dir: "{{ ansible_env.HOME }}/{{ project_name }}"
-venv_dir: "{{ app_dir }}/venv"
+venv_path: "{{ app_dir }}/venv"
 enable_ssl: false

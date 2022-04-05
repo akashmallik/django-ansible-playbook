@@ -21,7 +21,7 @@
     - name: Install packages
       pip:
         requirements: "{{ app_dir }}/requirements.txt"
-        virtualenv: "{{ venv_dir }}"
+        virtualenv: "{{ venv_path }}"
 
     - name: Sync codebase
       synchronize:
@@ -41,19 +41,19 @@
       django_manage:
         command: collectstatic
         app_path: "{{ app_dir }}/src"
-        virtualenv: "{{ venv_dir }}"
+        virtualenv: "{{ venv_path }}"
 
     - name: Django database migrations
       django_manage:
         command: makemigrations
         app_path: "{{ app_dir }}/src"
-        virtualenv: "{{ venv_dir }}"
+        virtualenv: "{{ venv_path }}"
 
     - name: Django migrate database
       django_manage:
         command: migrate
         app_path: "{{ app_dir }}/src"
-        virtualenv: "{{ venv_dir }}"
+        virtualenv: "{{ venv_path }}"
 
     - name: Daemon reload and restart gunicorn, nginx
       become: True

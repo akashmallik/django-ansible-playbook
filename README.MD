@@ -23,7 +23,7 @@ ansible --version
     ```shell
     cd playbooks
     ```
-- Make sure you are using the correct inventory. Default inventory `environments/local`. You can modify it from the `playbooks/ansible.cfg` file.
+- Make sure you are using the correct inventory. Default inventory `inventories/local`. You can modify it from the `playbooks/ansible.cfg` file.
 - Update the specified inventory variables. Variables contained in the folder you mentioned as the value of `inventory` in the `playbooks/ansible.cfg` file.
 - Run `setup.yml` playbook
     ```shell
