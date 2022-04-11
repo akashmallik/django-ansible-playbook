@@ -4,10 +4,10 @@ server {
 
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static {
-        alias {{ app_dir }}/src/staticfiles/;
+        alias {{ app_path }}/src/staticfiles/;
     }
     location /media {
-        alias {{ app_dir }}/src/media/;
+        alias {{ app_path }}/src/media/;
     }
 
     location / {

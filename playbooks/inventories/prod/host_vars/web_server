@@ -6,6 +6,6 @@ domain: example.com
 host_port: 80
 admin_email: admin@example.com
 project_name: simpleproject
-app_dir: "{{ ansible_env.HOME }}/{{ project_name }}"
-venv_path: "{{ app_dir }}/venv"
+app_path: "{{ ansible_env.HOME }}/{{ project_name }}"
+venv_path: "{{ app_path }}/venv"
 enable_ssl: true

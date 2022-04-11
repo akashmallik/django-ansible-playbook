@@ -6,9 +6,9 @@
     - name: Server and project information
       debug:
         msg:
-          - "IP Address: {{ ansible_host }}"
-          - "Hostname: {{ ansible_hostname }}"
-          - "Application Directory: {{ app_dir }}"
+          - "IP address: {{ ansible_host }}"
+          - "Application path: {{ app_path }}"
+          - "Virtualenv Path: {{ venv_path }}"
 
     - name: Update apt cache
       become: true
@@ -34,7 +34,7 @@
     - name: Create app directory
       become: true
       file:
-        path: "{{ app_dir }}"
+        path: "{{ app_path }}"
         state: directory
         owner: "{{ user }}"
         group: "{{ group }}"
@@ -42,17 +42,17 @@
     - name: Copy requirements.txt
       copy:
         src: ../requirements.txt
-        dest: "{{ app_dir }}/requirements.txt"
+        dest: "{{ app_path }}/requirements.txt"
 
     - name: Install packages
       pip:
-        requirements: "{{ app_dir }}/requirements.txt"
+        requirements: "{{ app_path }}/requirements.txt"
         virtualenv: "{{ venv_path }}"
 
     - name: Sync codebase
       synchronize:
         src: ../src/
-        dest: "{{ app_dir }}/src"
+        dest: "{{ app_path }}/src"
         rsync_opts:
           - "--exclude=__pycache__"
           - "--exclude=media"
@@ -60,25 +60,25 @@
 
     - name: Make manage.py executable
       file:
-        path: "{{ app_dir }}/src/manage.py"
+        path: "{{ app_path }}/src/manage.py"
         mode: 0777
 
     - name: Django database migrations
       django_manage:
         command: makemigrations
-        app_path: "{{ app_dir }}/src"
+        app_path: "{{ app_path }}/src"
         virtualenv: "{{ venv_path }}"
 
     - name: Django migrate database
       django_manage:
         command: migrate
-        app_path: "{{ app_dir }}/src"
+        app_path: "{{ app_path }}/src"
         virtualenv: "{{ venv_path }}"
       
     - name: Django collect static files
       django_manage:
         command: collectstatic
-        app_path: "{{ app_dir }}/src"
+        app_path: "{{ app_path }}/src"
         virtualenv: "{{ venv_path }}"
     
     - name: Install gunicorn
