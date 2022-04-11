@@ -5,7 +5,10 @@
   tasks:
     - name: Server and project information
       debug:
-        msg: "IP Address: {{ ansible_default_ipv4.address }}, Hostname: {{ ansible_hostname }}, Application Directory: {{ app_dir }}"
+        msg:
+          - "IP Address: {{ ansible_host }}"
+          - "Hostname: {{ ansible_hostname }}"
+          - "Application Directory: {{ app_dir }}"
 
     - name: Update apt cache
       become: true
