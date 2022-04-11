@@ -3,10 +3,10 @@ server {
     server_name {{ ansible_host }} {{ domain }} www.{{ domain }};
 
     location = /favicon.ico { access_log off; log_not_found off; }
-    location /static {
+    location /static/ {
         alias {{ app_path }}/src/staticfiles/;
     }
-    location /media {
+    location /media/ {
         alias {{ app_path }}/src/media/;
     }
 
